@@ -1,11 +1,14 @@
+from dotenv import load_dotenv
+from pathlib import Path
 import os
 from typing import Any
+
+ROOT_ENV = Path(__file__).resolve().parent.parent / ".env"
+load_dotenv(ROOT_ENV)
 
 import redis.asyncio as redis
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from dotenv import load_dotenv
-from pathlib import Path
 
 from middleware.tenant import tenant_middleware
 from routers import auth, documents, chat, workspaces
@@ -13,9 +16,6 @@ from services.qdrant_client import health_check as qdrant_health
 from services.neo4j_client import health_check as neo4j_health, ENABLE_NEO4J
 from services.embedding_service import health_check as embedding_health
 from services.supabase_client import get_supabase_client
-
-ROOT_ENV = Path(__file__).resolve().parent.parent / ".env"
-load_dotenv(ROOT_ENV)
 
 REDIS_URL: str = os.getenv("REDIS_URL", "redis://localhost:6379")
 

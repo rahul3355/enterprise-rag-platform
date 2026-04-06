@@ -1,13 +1,18 @@
 import os
 import logging
+from pathlib import Path
 from typing import Any
 from functools import lru_cache
 
+from dotenv import load_dotenv
 from fastapi import HTTPException, Request, status
 from fastapi.responses import JSONResponse
 from jose import jwt, jwk
 from jose.exceptions import JWTError, JWKError
 import httpx
+
+ROOT_ENV = Path(__file__).resolve().parent.parent.parent / ".env"
+load_dotenv(ROOT_ENV)
 
 JWT_SECRET: str = os.getenv("JWT_SECRET", "")
 SUPABASE_URL: str = os.getenv("SUPABASE_URL", "")
@@ -36,11 +41,9 @@ def decode_supabase_jwt(token: str) -> dict[str, Any]:
     try:
         jwks = get_jwks()
         if jwks.get("keys"):
-            # Get the key ID from token header
             unverified_header = jwt.get_unverified_header(token)
             kid = unverified_header.get("kid")
 
-            # Find matching key
             for key in jwks["keys"]:
                 if key.get("kid") == kid:
                     public_key = jwk.construct(key)
@@ -54,12 +57,12 @@ def decode_supabase_jwt(token: str) -> dict[str, Any]:
     except JWTError:
         pass
 
-    # Fallback to legacy HS256 verification
+    # Fallback: try both HS256 and ES256 with the JWT secret
     try:
         payload = jwt.decode(
             token,
             SUPABASE_JWT_SECRET,
-            algorithms=["HS256"],
+            algorithms=["HS256", "ES256"],
             audience="authenticated",
         )
         return payload

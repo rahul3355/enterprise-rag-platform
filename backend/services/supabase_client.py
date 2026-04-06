@@ -1,7 +1,12 @@
 import os
+from pathlib import Path
 from typing import Any, Optional
 
+from dotenv import load_dotenv
 from supabase import create_client, Client
+
+ROOT_ENV = Path(__file__).resolve().parent.parent.parent / ".env"
+load_dotenv(ROOT_ENV)
 
 SUPABASE_URL: str = os.getenv("SUPABASE_URL", "")
 SUPABASE_SERVICE_ROLE_KEY: str = os.getenv("SUPABASE_SERVICE_ROLE_KEY", "")

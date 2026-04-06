@@ -4,6 +4,7 @@ from typing import Optional
 from uuid import uuid4
 
 from fastapi import APIRouter, Depends, HTTPException, UploadFile
+from pydantic import BaseModel
 
 from middleware.tenant import get_auth_user
 from models.schemas import (

@@ -4,9 +4,14 @@ Generates vector embeddings for text chunks using openai/text-embedding-3-small.
 """
 
 import os
+from pathlib import Path
 from typing import Optional
 
+from dotenv import load_dotenv
 from openai import AsyncOpenAI
+
+ROOT_ENV = Path(__file__).resolve().parent.parent.parent / ".env"
+load_dotenv(ROOT_ENV)
 
 OPENROUTER_API_KEY: str = os.getenv("OPENROUTER_API_KEY", "")
 EMBEDDING_MODEL: str = "openai/text-embedding-3-small"

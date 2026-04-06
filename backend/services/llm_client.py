@@ -1,8 +1,13 @@
 import os
+from pathlib import Path
 from typing import Any, Optional
 
+from dotenv import load_dotenv
 from langfuse import Langfuse
 from openai import AsyncOpenAI
+
+ROOT_ENV = Path(__file__).resolve().parent.parent.parent / ".env"
+load_dotenv(ROOT_ENV)
 
 OPENROUTER_API_KEY: str = os.getenv("OPENROUTER_API_KEY", "")
 OPENROUTER_MODEL: str = os.getenv(

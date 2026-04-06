@@ -1,7 +1,12 @@
 import os
+from pathlib import Path
 from typing import Any, Optional
 
+from dotenv import load_dotenv
 from neo4j import AsyncGraphDatabase, AsyncDriver
+
+ROOT_ENV = Path(__file__).resolve().parent.parent.parent / ".env"
+load_dotenv(ROOT_ENV)
 
 NEO4J_URI: str = os.getenv("NEO4J_URI", "bolt://localhost:7687")
 NEO4J_USER: str = os.getenv("NEO4J_USER", "neo4j")
