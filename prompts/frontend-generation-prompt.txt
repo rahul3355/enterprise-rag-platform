@@ -1,0 +1,160 @@
+Frontend Claude prompt
+
+You are generating the frontend for a multi-tenant enterprise RAG platform.
+
+This prompt is the source of truth. Follow it exactly. Do not introduce unnecessary libraries or frameworks.
+
+Tech stack:
+
+* Next.js App Router
+* TypeScript
+* Tailwind CSS
+* shadcn/ui
+* Supabase client
+* Lucide React
+
+Goal:
+Build a clean, white-label, production-minded frontend for an enterprise RAG application with authentication, workspaces, document uploads, document status tracking, chat, citations, history, and settings.
+
+Required routes:
+
+app/
+
+* (auth)/login/page.tsx
+* (auth)/signup/page.tsx
+* dashboard/page.tsx
+* workspaces/page.tsx
+* upload/page.tsx
+* chat/page.tsx
+* admin/page.tsx
+* settings/page.tsx
+
+Required components:
+
+components/
+
+* ChatWindow.tsx
+* CitationsPanel.tsx
+* ChatHistorySidebar.tsx
+* DocumentUploader.tsx
+* WorkspaceSelector.tsx
+
+Required support files:
+
+lib/
+
+* supabase.ts
+* api.ts
+
+Also create:
+
+* middleware.ts
+
+Strict requirements:
+
+1. Use App Router only.
+2. Use TypeScript everywhere.
+3. Use Tailwind and shadcn/ui only.
+4. Use env vars from .env.local.
+5. Do not use mock data.
+6. Use real API calls to NEXT_PUBLIC_BACKEND_URL.
+7. Use Supabase auth for login and signup.
+8. Redirect unauthenticated users to /login.
+9. Protect all app pages except login and signup.
+10. Keep components modular and reusable.
+11. Use loading states everywhere.
+12. Use error states everywhere.
+13. Use empty states everywhere.
+14. Use responsive layouts.
+15. Use clean spacing and enterprise UI styling.
+16. Do not leave TODO comments.
+17. Do not leave placeholder pass-through code.
+18. Do not leave unused imports.
+19. Generate complete code.
+
+Page requirements:
+
+Login page:
+
+* Email and password fields
+* Login button
+* Link to signup page
+* Supabase auth integration
+* Redirect to dashboard on success
+
+Signup page:
+
+* Name, company, email, password
+* Create auth user
+* Create tenant row if needed
+* Redirect to dashboard
+
+Dashboard page:
+
+* Summary cards
+* Recent uploads
+* Recent chats
+* Workspace selector
+* Quick links to upload and chat
+
+Workspaces page:
+
+* List all workspaces
+* Create workspace modal
+* Select workspace
+* Delete workspace if admin
+
+Upload page:
+
+* Upload PDF, DOCX, PPTX, TXT, CSV
+* Drag and drop uploader
+* Progress bar
+* File status badges
+* Poll GET /documents every 3 seconds
+* Show uploading, processing, ready, failed
+
+Chat page:
+
+* 3-column layout
+* Left sidebar: session history grouped by date
+* Center: chat messages and input
+* Right sidebar: citations panel
+* Streaming response support
+* Citation click support
+* Follow-up context support
+
+Admin page:
+
+* Tenant settings
+* Branding settings
+* User list
+* Workspace list
+
+Settings page:
+
+* User profile
+* Change password
+* Theme setting
+* Notification settings
+
+Specific implementation requirements:
+
+* ChatWindow.tsx must support assistant messages, user messages, loading state, streaming state, and citations
+* CitationsPanel.tsx must show document name, page number, snippet, and source score
+* ChatHistorySidebar.tsx must group chats by Today, Yesterday, This Week, Older
+* DocumentUploader.tsx must support drag-and-drop and file input
+* WorkspaceSelector.tsx must support current workspace switching
+* middleware.ts must redirect unauthenticated users
+* lib/api.ts must centralize all backend API calls
+* lib/supabase.ts must create browser Supabase client
+
+After creating all files:
+
+1. Run npm run lint
+2. Run npm run build
+3. Fix all TypeScript errors
+4. Fix all import errors
+5. Fix all hydration issues
+6. Fix all client/server component mismatches
+7. Verify that npm run dev starts successfully
+8. Report any remaining issues before finishing

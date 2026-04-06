@@ -1,0 +1,60 @@
+# Environment
+.env
+.env.*
+!.env.example
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.pyo
+*.egg-info/
+*.egg
+dist/
+build/
+*.so
+.eggs/
+.ruff_cache/
+.pytest_cache/
+.mypy_cache/
+
+# Virtual environments
+**/venv/
+**/env/
+
+# Node
+node_modules/
+.next/
+out/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Docker data
+infra/docker/qdrant_data/
+infra/docker/neo4j_data/
+
+# Supabase
+supabase/.temp/
+
+# Logs
+*.log
+
+# Temporary files
+*.tmp
+*.bak
+
+# Vercel
+.vercel/
+
+# Windows
+*.exe
+*.dll

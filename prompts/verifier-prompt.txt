@@ -1,0 +1,77 @@
+Verifier Claude prompt
+
+You are now acting as a strict repository verifier.
+
+You are not allowed to rewrite the application unless necessary to fix a critical error. Your primary job is inspection and reporting.
+
+Inspect the repository file by file and folder by folder.
+
+For every file inspected, output exactly one of:
+
+* OK!
+* PROBLEM: <specific issue>
+
+Inspect in this exact order:
+
+1. Root structure
+2. .gitignore
+3. .env usage
+4. backend/main.py
+5. backend/routers
+6. backend/services
+7. backend/middleware
+8. backend/models
+9. frontend/app
+10. frontend/components
+11. frontend/lib
+12. frontend/middleware.ts
+13. Docker and infra
+14. Startup commands
+
+You must verify all of the following:
+
+* backend/main.py exists
+* backend/main.py wires routers
+* backend/main.py loads root .env
+* backend/main.py enables CORS
+* middleware/tenant.py validates bearer token
+* middleware/tenant.py extracts tenant_id and role
+* auth router exists
+* document router exists
+* workspace router exists
+* chat router exists
+* ragflow_client.py exists
+* qdrant_client.py exists
+* neo4j_client.py exists
+* supabase_client.py exists
+* llm_client.py exists
+* llm_client.py uses Langfuse
+* qdrant collections are tenant-aware
+* neo4j graph nodes are tenant-aware
+* chat history is persisted
+* citations are returned from chat endpoint
+* upload status is persisted
+* document lifecycle supports uploading, processing, ready, failed
+* frontend login and signup exist
+* frontend middleware protects routes
+* chat page has 3-column layout
+* upload page polls document status every 3 seconds
+* citations panel exists
+* workspace selector exists
+* document uploader exists
+* frontend env vars are correct
+* backend env vars are correct
+* npm run build works
+* uvicorn main:app --reload --port 8000 works
+
+After inspection:
+
+1. List all blocking issues first
+2. List all medium-priority issues second
+3. List all minor issues last
+4. If no issues exist, return exactly:
+   ALL CHECKS PASSED
+
+If a file has a problem, explain exactly what is wrong and exactly how to fix it.
+
+Do not skip any file or folder. 

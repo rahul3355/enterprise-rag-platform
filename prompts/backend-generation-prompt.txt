@@ -1,0 +1,184 @@
+Backend Claude prompt
+
+You are generating the backend for a multi-tenant enterprise RAG platform.
+
+This prompt is the source of truth. Follow it exactly. Do not change the architecture. Do not introduce LangChain, LlamaIndex, Celery, Django, Flask, Prisma, SQLAlchemy ORM, GraphQL, MongoDB, Pinecone, Chroma, or any unnecessary framework.
+
+Tech stack:
+
+* FastAPI
+* Pydantic
+* httpx
+* Supabase
+* Redis
+* Qdrant
+* Neo4j
+* Langfuse
+* OpenRouter
+* python-jose
+* python-dotenv
+
+Project goal:
+Build a production-minded, local-first, white-label enterprise RAG system where companies upload documents, documents are processed into chunks, embeddings, vectors, and graph nodes, then users can ask questions and receive grounded responses with citations and follow-up memory.
+
+The backend must support:
+
+* Supabase auth
+* Tenant isolation
+* Workspace isolation
+* Uploading and listing documents
+* Polling document processing status
+* Chat sessions
+* Chat memory
+* Citations
+* Graph retrieval
+* Vector retrieval
+* OpenRouter model calls
+* Langfuse tracing
+* Future production deployment readiness
+
+Required file structure:
+
+backend/
+
+* main.py
+* routers/
+
+  * auth.py
+  * documents.py
+  * chat.py
+  * workspaces.py
+* services/
+
+  * ragflow_client.py
+  * qdrant_client.py
+  * neo4j_client.py
+  * supabase_client.py
+  * llm_client.py
+* middleware/
+
+  * tenant.py
+* models/
+
+  * schemas.py
+
+Strict requirements:
+
+1. Keep everything async.
+2. Every protected route must require a bearer token.
+3. Decode Supabase JWT using python-jose.
+4. Extract user_id, tenant_id, role, workspace access from JWT or Supabase lookup.
+5. Attach tenant context to request.state.
+6. Never trust tenant_id from the client request body.
+7. Validate that every workspace belongs to the authenticated tenant.
+8. Use dotenv and load the root .env file.
+9. Use env vars only.
+10. Use Pydantic models for all request and response bodies.
+11. Add full type hints everywhere.
+12. Add clear error handling and return 401, 403, 404, and 500 where appropriate.
+13. Do not leave TODO comments.
+14. Do not leave placeholder pass statements.
+15. Do not leave unused imports.
+16. Generate complete code, not pseudo code.
+
+Implement these routes:
+
+POST /auth/session
+
+* Validate Supabase JWT
+* Return current user info
+
+GET /me
+
+* Return current authenticated user, tenant, role, and workspaces
+
+POST /workspaces/create
+
+* Create workspace for current tenant
+
+GET /workspaces
+
+* Return all workspaces for current tenant
+
+POST /documents/upload
+
+* Accept multipart upload
+* Save file metadata to Supabase documents table
+* Upload file to Supabase Storage
+* Trigger RAGFlow ingestion
+* Set status to uploading, then processing
+
+GET /documents
+
+* Return all tenant documents with status
+* Include chunk count, upload time, file size, workspace, and processing status
+
+POST /chat
+
+* Accept workspace_id, message, session_id
+* Retrieve last messages from chat history
+* Retrieve vector context from Qdrant
+* Retrieve graph context from Neo4j
+* Retrieve document chunks from RAGFlow
+* Build prompt for OpenRouter
+* Save assistant response and citations
+* Return response, citations, and updated session_id
+
+GET /chat/history
+
+* Return grouped sessions and messages for current tenant and workspace
+
+GET /health
+
+* Return service status for backend, redis, qdrant, neo4j, supabase, ragflow
+
+Document upload flow:
+
+1. User uploads file
+2. Backend uploads file to Supabase Storage
+3. Backend inserts document row into Supabase Postgres
+4. Backend calls RAGFlow ingestion API
+5. RAGFlow parses document
+6. RAGFlow chunks document
+7. RAGFlow creates embeddings
+8. Qdrant stores vectors
+9. Neo4j stores graph nodes and edges
+10. Backend updates document status to ready
+11. GET /documents exposes live status
+
+Chat flow:
+
+1. Validate user
+2. Resolve tenant
+3. Resolve workspace
+4. Load recent conversation history
+5. Query Qdrant
+6. Query Neo4j
+7. Query RAGFlow
+8. Build final retrieval context
+9. Send prompt to OpenRouter
+10. Save assistant message
+11. Save citations
+12. Return grounded answer
+
+Required implementation details:
+
+* qdrant_client.py must create collections per tenant and workspace
+* neo4j_client.py must create document, chunk, entity, and relationship nodes
+* ragflow_client.py must support upload, ingest, and search
+* llm_client.py must wrap all model calls with Langfuse traces
+* middleware/tenant.py must attach authenticated tenant info to request.state
+* main.py must wire all routers correctly
+* main.py must enable CORS for localhost:3000
+* health route must test downstream services
+
+After creating all files:
+
+1. Run import validation on every file
+2. Run syntax validation on every file
+3. Check for missing imports
+4. Check for circular imports
+5. Check for unused imports
+6. Check for invalid env names
+7. Check that uvicorn main:app --reload --port 8000 can run successfully
+8. Report any problems immediately and fix them before finishing

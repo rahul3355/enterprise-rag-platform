@@ -1,0 +1,56 @@
+# Docker ignore file
+
+# Dependencies
+node_modules/
+**/venv/
+**/env/
+
+# Environment
+.env
+.env.*
+!.env.example
+
+# Build outputs
+.next/
+dist/
+build/
+*.egg-info/
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+.ruff_cache/
+.pytest_cache/
+.mypy_cache/
+
+# Git
+.git/
+.gitignore
+
+# IDE
+.vscode/
+.idea/
+*.swp
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Docker data
+infra/docker/qdrant_data/
+infra/docker/neo4j_data/
+
+# Supabase
+supabase/.temp/
+
+# Logs and temp files
+*.log
+*.tmp
+*.bak
+
+# Vercel
+.vercel/
+
+# Prompts (internal development)
+prompts/
